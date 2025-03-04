@@ -1,7 +1,11 @@
 const mongoose = require('mongoose');
+const findOrCreate = require("mongoose-findorcreate");
+
+
 
 //schema design
 const userSchema = new mongoose.Schema({
+  googleId: { type: String, unique: true, sparse: true },
       name:{
         type:String,
         required:[true,'name is required']
@@ -13,12 +17,14 @@ const userSchema = new mongoose.Schema({
       },
       password:{
         type: String,
-        required: [true,"password is required"]
       }
 },
  {timestamps:true}
 );
+userSchema.plugin(findOrCreate);
 
+const User = mongoose.model("User", userSchema);
 //export
+module.exports = User;
 const userModel = mongoose.model('users',userSchema)
 module.exports = userModel
